@@ -145,6 +145,10 @@ RSpec.describe CmSms::Message do
     end
   end
   
+  describe '#request' do
+    it { expect(message.request).to be_kind_of(CmSms::Request) }
+  end
+  
   describe '#to_xml' do
     before { CmSms.configure { |config| config.product_token = 'SOMETOKEN' } }
     

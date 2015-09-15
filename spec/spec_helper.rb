@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'rspec'
+require 'simplecov'
 
+SimpleCov.start
 Bundler.setup
 
 require 'phony'

@@ -1,6 +1,5 @@
 module CmSms
   class Messenger
-    cattr_accessor :default_params
     
     attr_accessor :from, :to, :body, :dcs
     
@@ -29,7 +28,15 @@ module CmSms
         super
       end
     end
-      
+    
+    def self.defaults
+      @@default_params
+    end
+
+    def self.default_params=value
+      @@default_params
+    end
+    
     def self.default(hash = {})
       self.default_params = CmSms.config.defaults.merge(hash).freeze
       default_params
