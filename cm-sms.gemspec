@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   
   if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-    spec.add_runtime_dependency "phony", "~> 2.15.0"
+    spec.add_runtime_dependency "phony", "~> 2.12"
   else
     spec.add_dependency "phony", "~> 2.15.0"
   end
