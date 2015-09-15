@@ -3,9 +3,9 @@ require 'delegate'
 module CmSms
   class MessageDelivery < Delegator
     def initialize(messenger, message_method, *args) #:nodoc:
-      @messenger = messenger
+      @messenger      = messenger
       @message_method = message_method
-      @args = args
+      @args           = args
     end
 
     def __getobj__ #:nodoc:
@@ -16,7 +16,6 @@ module CmSms
       @obj = obj
     end
 
-    # Returns the Mail::Message object
     def message
       __getobj__
     end
@@ -39,8 +38,8 @@ module CmSms
     
     def inspect
       prefix = "#<#{self.class}:0x#{self.__id__.to_s(16)}"
-      parts = instance_variables.map { |var| "#{var}=#{instance_variable_get(var).inspect}" }
-      str = [prefix, parts, ']>'].join(' ')
+      parts  = instance_variables.map { |var| "#{var}=#{instance_variable_get(var).inspect}" }
+      str    = [prefix, parts, ']>'].join(' ')
 
       str.taint if tainted?
       str

@@ -4,7 +4,7 @@ module CmSms
     
     def initialize(net_http_response)
       @net_http_response = net_http_response
-      @body = @net_http_response.body
+      @body              = @net_http_response.body
     end
     
     def success?

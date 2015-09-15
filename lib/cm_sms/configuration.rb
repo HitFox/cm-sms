@@ -5,7 +5,7 @@ module CmSms
     class PathMissing < ArgumentError; end
     
     ENDPOINT = 'https://sgw01.cm.nl'
-    PATH = '/gateway.ashx'
+    PATH     = '/gateway.ashx'
     
     attr_accessor :from, :to, :product_token, :endpoint, :path
     

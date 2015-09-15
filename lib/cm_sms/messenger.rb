@@ -8,8 +8,8 @@ module CmSms
       self.class.default_params ||= {}
       
       @from = attributes[:from] || self.class.default_params[:from]
-      @to = attributes[:to] || self.class.default_params[:to]
-      @dcs = attributes[:dcs] || self.class.default_params[:dcs]
+      @to   = attributes[:to] || self.class.default_params[:to]
+      @dcs  = attributes[:dcs] || self.class.default_params[:dcs]
       @body = attributes[:body]
     end
     
@@ -19,12 +19,12 @@ module CmSms
     end
     
     def message
-      @message ||= Message.new(from: from, to: to, dcs: dcs, body: body)
+      @message ||= CmSms::Message.new(from: from, to: to, dcs: dcs, body: body)
     end
     
     def self.method_missing(method_name, *args) # :nodoc:
       if new.respond_to?(method_name.to_s)
-        MessageDelivery.new(self, method_name, *args)
+        CmSms::MessageDelivery.new(self, method_name, *args)
       else
         super
       end

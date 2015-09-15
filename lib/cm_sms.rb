@@ -16,14 +16,8 @@ module CmSms
     end
     
     alias :config :configuration
-    
-    def load_messengers!
-      Dir[Rails.root.join('app','messengers', '*.rb')].each { |file| require(file) } if defined?(Rails)
-    end
   end
 end
-
-CmSms.load_messengers!
 
 
 

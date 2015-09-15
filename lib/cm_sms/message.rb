@@ -1,5 +1,6 @@
 require 'builder'
 require 'phony'
+require 'cm_sms/request'
 
 module CmSms
   class Message
@@ -11,11 +12,12 @@ module CmSms
     attr_accessor :from, :to, :body, :dcs, :reference
     
     def initialize(attributes = {})
-      @from = attributes[:from]
-      @to = attributes[:to]
-      @dcs = attributes[:dcs]
-      @body = attributes[:body]
-      @reference = attributes[:reference]
+      @from          = attributes[:from]
+      @to            = attributes[:to]
+      @dcs           = attributes[:dcs]
+      @body          = attributes[:body]
+      @reference     = attributes[:reference]
+      
       @product_token = CmSms.config.product_token
     end
     
@@ -36,7 +38,7 @@ module CmSms
     end
     
     def deliver
-      raise Configuration::ProductTokenMissing.new("Please provide an valid product key.\nAfter signup at https://www.cmtelecom.de/, you will find one in your settings.") if @product_token.blank?
+      raise CmSms::Configuration::ProductTokenMissing.new("Please provide an valid product key.\nAfter signup at https://www.cmtelecom.de/, you will find one in your settings.") if @product_token.blank?
       
       Request.new(to_xml).perform
     end
