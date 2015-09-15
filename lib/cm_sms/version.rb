@@ -4,6 +4,4 @@ module CmSms
   def self.version
     gem_version
   end
-  
-  VERSION = self.version
 end
