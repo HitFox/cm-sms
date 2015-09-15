@@ -21,15 +21,15 @@ module CmSms
       @product_token = CmSms.config.product_token
     end
     
-    def to_plausible?
-      to_present? && Phony.plausible?(to)
+    def receiver_plausible?      
+      receiver_present? && Phony.plausible?(to)
     end
     
-    def to_present?
+    def receiver_present?
       !to.nil? && !to.empty?
     end
     
-    def from_present?
+    def sender_present?
       !from.nil? && !from.empty?
     end
     
@@ -37,17 +37,25 @@ module CmSms
       !body.nil? && !body.empty?
     end
     
+    def product_token_present?
+      !@product_token.nil? && !@product_token.empty?
+    end
+    
+    def request
+      Request.new(to_xml)
+    end
+    
     def deliver
-      raise CmSms::Configuration::ProductTokenMissing.new("Please provide an valid product key.\nAfter signup at https://www.cmtelecom.de/, you will find one in your settings.") if @product_token.blank?
+      raise CmSms::Configuration::ProductTokenMissing.new("Please provide an valid product key.\nAfter signup at https://www.cmtelecom.de/, you will find one in your settings.") unless product_token_present?
       
-      Request.new(to_xml).perform
+      request.perform
     end
     
     def deliver!
-      raise FromMissing.new('The from attribute is missing.') unless from_present?
-      raise ToMissing.new('The to attribute is missing.') unless to_present?
+      raise FromMissing.new('The from attribute is missing.') unless sender_present?
+      raise ToMissing.new('The to attribute is missing.') unless receiver_present?
       raise BodyMissing.new('The body of the message is missing.') unless body_present?
-      raise ToUnplausible.new("THe given to attribute is not a plausible phone number.\nMaybe the country code is missing.")
+      raise ToUnplausible.new("THe given to attribute is not a plausible phone number.\nMaybe the country code is missing.") unless receiver_plausible?
       
       deliver
     end
