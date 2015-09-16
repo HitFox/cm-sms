@@ -1,12 +1,15 @@
 require 'spec_helper'
+require 'cm_sms/message'
 
 RSpec.describe CmSms::Message do
+  
+  let(:message_body) { 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v' }
   
   let(:message) do
     message = described_class.new
     message.from = 'ACME corp.'    
     message.to = '+41 44 111 22 33'      
-    message.body = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v'    
+    message.body = message_body
     message.reference = 'Ref:123'
     message
   end
@@ -153,7 +156,7 @@ RSpec.describe CmSms::Message do
     before { CmSms.configure { |config| config.product_token = 'SOMETOKEN' } }
     
     context 'when all attributes set' do
-      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME corp.</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY><REFERENCE>Ref:123</REFERENCE></MSG></MESSAGES>' }
+      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME corp.</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY><REFERENCE>Ref:123</REFERENCE></MSG></MESSAGES>' }
       it { expect(message.to_xml).to eq xml_body }
     end    
     
@@ -162,7 +165,7 @@ RSpec.describe CmSms::Message do
         message.reference = nil
         message
       end
-      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME corp.</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY></MSG></MESSAGES>' }
+      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME corp.</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY></MSG></MESSAGES>' }
       it { expect(resource.to_xml).to eq xml_body }
     end
   end

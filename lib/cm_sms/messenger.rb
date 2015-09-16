@@ -29,12 +29,16 @@ module CmSms
       end
     end
     
-    def self.defaults
-      @@default_params
+    def self.respond_to_missing?(method_name, *args) # :nodoc:
+      new.respond_to?(method_name.to_s) || super
+    end
+    
+    def self.default_params
+      @@default_params ||= CmSms.config.defaults
     end
 
-    def self.default_params=value
-      @@default_params
+    def self.default_params=(params = {})
+      @@default_params = params
     end
     
     def self.default(hash = {})

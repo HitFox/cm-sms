@@ -12,9 +12,9 @@ module CmSms
       @path     = CmSms.config.path
     end
     
-    def perform      
-      raise CmSms::Configuration::EndpointMissing.new("Please provide an valid api endpoint.\nIf you leave this config blank, the default will be set to https://sgw01.cm.nl.") if @endpoint.blank?
-      raise CmSms::Configuration::PathMissing.new("Please provide an valid api path.\nIf you leave this config blank, the default will be set to /gateway.ashx.") if @endpoint.blank?
+    def perform
+      raise CmSms::Configuration::EndpointMissing.new("Please provide an valid api endpoint.\nIf you leave this config blank, the default will be set to https://sgw01.cm.nl.") if @endpoint.nil? || @endpoint.empty?
+      raise CmSms::Configuration::PathMissing.new("Please provide an valid api path.\nIf you leave this config blank, the default will be set to /gateway.ashx.") if @path.nil? || @path.empty?
 
       uri = URI.parse(@endpoint)
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|

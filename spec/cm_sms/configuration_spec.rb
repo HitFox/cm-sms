@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cm_sms/configuration'
 
 RSpec.describe CmSms::Configuration do
   
