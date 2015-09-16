@@ -18,6 +18,3 @@ module CmSms
     alias :config :configuration
   end
 end
-
-
-

@@ -129,6 +129,14 @@ RSpec.describe CmSms::Message do
       it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyMissing }
     end
     
+    context 'when body is to long' do
+      subject(:resource) do
+        message.body = [message.body, message.body].join # 2 x 160 signs
+        message
+      end
+      it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyToLong }
+    end
+    
     context 'when to is not plausibe' do
       subject(:resource) do
         message.to = 'fuubar'

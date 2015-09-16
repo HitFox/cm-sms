@@ -7,6 +7,7 @@ module CmSms
     class FromMissing < ArgumentError; end
     class ToMissing < ArgumentError; end
     class BodyMissing < ArgumentError; end
+    class BodyToLong < ArgumentError; end
     class ToUnplausible < ArgumentError; end
     
     attr_accessor :from, :to, :body, :dcs, :reference
@@ -37,6 +38,10 @@ module CmSms
       !body.nil? && !body.empty?
     end
     
+    def body_correct_length?
+      body_present? && body.length <= 160
+    end
+    
     def product_token_present?
       !@product_token.nil? && !@product_token.empty?
     end
@@ -55,6 +60,7 @@ module CmSms
       raise FromMissing.new('The from attribute is missing.') unless sender_present?
       raise ToMissing.new('The to attribute is missing.') unless receiver_present?
       raise BodyMissing.new('The body of the message is missing.') unless body_present?
+      raise BodyToLong.new('The body of the message has a length greater than 160.') unless body_correct_length?
       raise ToUnplausible.new("THe given to attribute is not a plausible phone number.\nMaybe the country code is missing.") unless receiver_plausible?
       
       deliver
