@@ -6,6 +6,7 @@ module CmSms
     
     ENDPOINT = 'https://sgw01.cm.nl'
     PATH     = '/gateway.ashx'
+    DCS      = 8
     
     attr_accessor :from, :to, :product_token, :endpoint, :path
     

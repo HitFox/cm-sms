@@ -9,7 +9,7 @@ module CmSms
     end
     
     def success?
-      body.empty? && code.to_i == 200
+      body.to_s.strip.empty? && code.to_i == 200
     end
     
     def failure?

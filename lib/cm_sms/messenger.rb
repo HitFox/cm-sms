@@ -1,7 +1,7 @@
 module CmSms
   class Messenger
     
-    attr_accessor :from, :to, :body, :dcs
+    attr_accessor :from, :to, :body, :dcs, :reference
     
     def initialize(attributes = {})
       self.class.default_params ||= {}
@@ -10,6 +10,7 @@ module CmSms
       @to   = attributes[:to] || self.class.default_params[:to]
       @dcs  = attributes[:dcs] || self.class.default_params[:dcs]
       @body = attributes[:body]
+      @reference = attributes[:reference]
     end
     
     def content(attributes = {})
@@ -18,7 +19,7 @@ module CmSms
     end
     
     def message
-      @message ||= CmSms::Message.new(from: from, to: to, dcs: dcs, body: body)
+      @message ||= CmSms::Message.new(from: from, to: to, dcs: dcs, body: body, reference: reference)
     end
     
     def self.method_missing(method_name, *args) # :nodoc:
