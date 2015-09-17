@@ -4,7 +4,7 @@ module CmSms
   autoload :Messenger, 'cm_sms/messenger'
   autoload :Message, 'cm_sms/message'
   autoload :MessageDelivery, 'cm_sms/message_delivery'
-  autoload :DeliveryJob, 'cm_sms/delivery_job' if defined?(ActiveJob)
+  autoload :Webhook, 'cm_sms/webhook'
   
   class << self
     def configure
