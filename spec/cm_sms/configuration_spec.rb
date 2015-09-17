@@ -49,6 +49,24 @@ RSpec.describe CmSms::Configuration do
     end
   end
   
+  describe '#dcs' do
+    context 'when dcs is set through setter' do
+      subject(:resource) do 
+        config.dcs = 8
+        config
+      end
+      it 'returns the setted dcs' do
+        expect(resource.dcs).to eq 8
+      end
+    end
+    
+    context 'when dcs is not set' do
+      it 'returns the default enpoint set in constant' do
+        expect(config.dcs).to eq CmSms::Configuration::DCS
+      end
+    end
+  end
+  
   describe '#product_token' do
     context 'when product_token is set through setter' do
       subject(:resource) do 

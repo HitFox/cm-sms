@@ -8,7 +8,7 @@ module CmSms
     PATH     = '/gateway.ashx'
     DCS      = 8
     
-    attr_accessor :from, :to, :product_token, :endpoint, :path
+    attr_accessor :from, :to, :product_token, :endpoint, :path, :dcs
     
     alias :'api_key=' :'product_token='  
     
@@ -20,8 +20,12 @@ module CmSms
       @path || PATH
     end
     
+    def dcs
+      @dcs || DCS
+    end
+    
     def defaults
-      @defaults ||= { from: from, to: to }
+      @defaults ||= { from: from, to: to, dcs: dcs }
     end
   end
 end

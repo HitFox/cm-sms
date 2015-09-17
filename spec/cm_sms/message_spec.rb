@@ -13,6 +13,20 @@ RSpec.describe CmSms::Message do
     message.reference = 'Ref:123'
     message
   end
+
+  describe '#dcs_numeric?' do
+    context 'when dcs is provided as number' do
+      it { expect(message.dcs_numeric?).to be true }
+    end
+    
+    context 'when dcs is provided not as number' do
+      subject(:resource) do
+        message.dcs = 'Fuubar'        
+        message
+      end
+      it { expect(resource.dcs_numeric?).to be false }
+    end
+  end
   
   describe '#receiver_plausible?' do
     context 'when a valid phone number is provided' do
@@ -105,44 +119,55 @@ RSpec.describe CmSms::Message do
       it { expect { message.deliver! }.to raise_error CmSms::Configuration::ProductTokenMissing }
     end
     
-    context 'when receiver is missing' do
-      subject(:resource) do
-        message.to = nil
-        message
+    context 'when product token is given' do
+      before { CmSms.configure { |config| config.product_token = 'SOMETOKEN' } }
+      context 'when receiver is missing' do
+        subject(:resource) do
+          message.to = nil
+          message
+        end
+        it { expect { resource.deliver! }.to raise_error CmSms::Message::ToMissing }
       end
-      it { expect { resource.deliver! }.to raise_error CmSms::Message::ToMissing }
-    end
     
-    context 'when sender is missing' do
-      subject(:resource) do
-        message.from = nil
-        message
+      context 'when sender is missing' do
+        subject(:resource) do
+          message.from = nil
+          message
+        end
+        it { expect { resource.deliver! }.to raise_error CmSms::Message::FromMissing }
       end
-      it { expect { resource.deliver! }.to raise_error CmSms::Message::FromMissing }
-    end
     
-    context 'when body is missing' do
-      subject(:resource) do
-        message.body = nil
-        message
+      context 'when body is missing' do
+        subject(:resource) do
+          message.body = nil
+          message
+        end
+        it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyMissing }
       end
-      it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyMissing }
-    end
     
-    context 'when body is to long' do
-      subject(:resource) do
-        message.body = [message.body, message.body].join # 2 x 160 signs
-        message
+      context 'when body is to long' do
+        subject(:resource) do
+          message.body = [message.body, message.body].join # 2 x 160 signs
+          message
+        end
+        it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyToLong }
       end
-      it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyToLong }
-    end
     
-    context 'when to is not plausibe' do
-      subject(:resource) do
-        message.to = 'fuubar'
-        message
+      context 'when to is not plausibe' do
+        subject(:resource) do
+          message.to = 'fuubar'
+          message
+        end
+        it { expect { resource.deliver! }.to raise_error CmSms::Message::ToUnplausible }
       end
-      it { expect { resource.deliver! }.to raise_error CmSms::Message::ToUnplausible }
+    
+      context 'when dcs is not a number' do
+        subject(:resource) do
+          message.dcs = 'fuubar'
+          message
+        end
+        it { expect { resource.deliver! }.to raise_error CmSms::Message::DCSNotNumeric }
+      end
     end
     
     context 'when all needed attributes set' do
