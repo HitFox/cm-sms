@@ -41,10 +41,14 @@ module CmSms
       !from.nil? && !from.empty?
     end
     
+    def sender_length?
+      sender_present? && from.length <= 11
+    end
+    
     def body_present?
       !body.nil? && !body.empty?
     end
-    
+      
     def body_correct_length?
       body_present? && body.length <= 160
     end
