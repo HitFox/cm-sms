@@ -11,3 +11,4 @@
 .DS_Store
 coverage
 *.gem
+.coveralls.yml
