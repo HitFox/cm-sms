@@ -149,4 +149,10 @@ RSpec.describe CmSms::Webhook::Response do
       it { expect(subject.error?).to be true } 
     end
   end
+  
+  describe '#to_yaml' do
+    subject { described_class.new(response_params).to_yaml }
+    it { expect(subject).to eq response_params.to_yaml }
+  end
+  
 end

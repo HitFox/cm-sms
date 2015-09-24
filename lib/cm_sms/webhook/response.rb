@@ -4,9 +4,11 @@ module CmSms
 
       ATTRIBUTE_NAMES = %w(sent received to reference statuscode errorcode errordescription)
       
-      attr_reader *ATTRIBUTE_NAMES
+      attr_reader *ATTRIBUTE_NAMES, :attributes
       
       def initialize(attributes = {})
+        @attributes = attributes
+        
         attributes.each { |attr, value| instance_variable_set("@#{attr}", value) } if attributes
       end
       
@@ -52,6 +54,10 @@ module CmSms
       
       def error?
         errorcode? || rejected? || failed?
+      end
+      
+      def to_yaml
+        (@attributes || {}).to_yaml
       end
 
     end
