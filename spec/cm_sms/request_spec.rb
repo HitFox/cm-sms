@@ -5,7 +5,7 @@ RSpec.describe CmSms::Request do
   let(:message_body) { 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v' }
   let(:message) do
     message = CmSms::Message.new
-    message.from = 'ACME corp.'    
+    message.from = 'ACME'    
     message.to = '+41 44 111 22 33'      
     message.body = message_body
     message.reference = 'Ref:123'

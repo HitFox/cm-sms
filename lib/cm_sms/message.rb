@@ -4,7 +4,7 @@ require 'cm_sms/request'
 
 module CmSms
   class Message
-    class SenderTooLong < ArgumentError; end
+    class FromTooLong < ArgumentError; end
     class FromMissing < ArgumentError; end
     class ToMissing < ArgumentError; end
     class BodyMissing < ArgumentError; end
@@ -69,8 +69,8 @@ module CmSms
     end
     
     def deliver!
-      raise SenderTooLong.new('The value for the sender attribute must contain 1..11 characters.') unless sender_length?
       raise FromMissing.new('The value for the from attribute is missing.') unless sender_present?
+      raise FromTooLong.new('The value for the sender attribute must contain 1..11 characters.') unless sender_length?
       raise ToMissing.new('The value for the to attribute is missing.') unless receiver_present?
       raise BodyMissing.new('The body of the message is missing.') unless body_present?
       raise BodyTooLong.new('The body of the message has a length greater than 160.') unless body_correct_length?

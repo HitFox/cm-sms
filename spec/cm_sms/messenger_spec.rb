@@ -6,7 +6,7 @@ RSpec.describe CmSms::Messenger do
   before do
     class NotificationMessenger < CmSms::Messenger
       def notification
-        content from: 'Sender Inc.'
+        content from: 'Sender'
       end
     end
   end
@@ -15,7 +15,7 @@ RSpec.describe CmSms::Messenger do
   
   let(:messenger) do
     messenger = described_class.new
-    messenger.from = 'ACME corp.'    
+    messenger.from = 'ACME'    
     messenger.to = '+41 44 111 22 33'
     messenger.body = message_body
     messenger
@@ -51,7 +51,7 @@ RSpec.describe CmSms::Messenger do
         messenger.content
         messenger
       end
-      it { expect(resource.from).to eq 'ACME corp.' }
+      it { expect(resource.from).to eq 'ACME' }
       it { expect(resource.to).to eq '+41 44 111 22 33' }
       it { expect(resource.body).to eq message_body }
     end
@@ -60,7 +60,7 @@ RSpec.describe CmSms::Messenger do
   describe '#message' do
     subject(:message) { messenger.message }
     context 'when all attributes given' do
-      it { expect(message.from).to eq 'ACME corp.' }
+      it { expect(message.from).to eq 'ACME' }
       it { expect(message.to).to eq '+41 44 111 22 33' }
       it { expect(message.body).to eq message_body }
     end

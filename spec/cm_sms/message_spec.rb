@@ -7,7 +7,7 @@ RSpec.describe CmSms::Message do
   
   let(:message) do
     message = described_class.new
-    message.from = 'ACME corp.'    
+    message.from = 'ACME'    
     message.to = '+41 44 111 22 33'      
     message.body = message_body
     message.reference = 'Ref:123'
@@ -150,7 +150,7 @@ RSpec.describe CmSms::Message do
           message.body = [message.body, message.body].join # 2 x 160 signs
           message
         end
-        it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyToLong }
+        it { expect { resource.deliver! }.to raise_error CmSms::Message::BodyTooLong }
       end
     
       context 'when to is not plausibe' do
@@ -189,7 +189,7 @@ RSpec.describe CmSms::Message do
     before { CmSms.configure { |config| config.product_token = 'SOMETOKEN' } }
     
     context 'when all attributes set' do
-      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME corp.</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY><REFERENCE>Ref:123</REFERENCE></MSG></MESSAGES>' }
+      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY><REFERENCE>Ref:123</REFERENCE></MSG></MESSAGES>' }
       it { expect(message.to_xml).to eq xml_body }
     end    
     
@@ -198,7 +198,7 @@ RSpec.describe CmSms::Message do
         message.reference = nil
         message
       end
-      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME corp.</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY></MSG></MESSAGES>' }
+      let(:xml_body) { '<?xml version="1.0" encoding="UTF-8"?><MESSAGES><AUTHENTICATION><PRODUCTTOKEN>SOMETOKEN</PRODUCTTOKEN></AUTHENTICATION><MSG><FROM>ACME</FROM><TO>+41 44 111 22 33</TO><BODY>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v</BODY></MSG></MESSAGES>' }
       it { expect(resource.to_xml).to eq xml_body }
     end
   end

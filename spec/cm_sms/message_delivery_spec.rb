@@ -6,7 +6,7 @@ RSpec.describe CmSms::MessageDelivery do
   before do
     class NotificationMessenger < CmSms::Messenger
       def notification(to)
-        content from: 'Sender Inc.', 
+        content from: 'Sender', 
                 to: to, 
                 body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v'
       end
@@ -68,7 +68,7 @@ RSpec.describe CmSms::MessageDelivery do
         CmSms.configure { |config| config.product_token = 'SOMETOKEN' }
         class NotificationMessenger < CmSms::Messenger
           def notification(to)
-            content from: 'Sender Inc.', 
+            content from: 'Sender', 
                     to: to, 
                     body: nil
           end
