@@ -1,47 +1,99 @@
-# Cm::Sms
+Cm::Sms
+=======
 
 [![Build Status](https://img.shields.io/travis/HitFox/cm-sms.svg?style=flat-square)](https://travis-ci.org/HitFox/cm-sms)
 [![Gem](https://img.shields.io/gem/dt/cm-sms.svg?style=flat-square)](https://rubygems.org/gems/cm-sms)
 [![Code Climate](https://img.shields.io/codeclimate/github/HitFox/cm-sms.svg?style=flat-square)](https://codeclimate.com/github/HitFox/cm-sms)
 [![Coverage](https://img.shields.io/coveralls/HitFox/cm-sms.svg?style=flat-square)](https://coveralls.io/github/HitFox/cm-sms)
 
+Description
+-----------
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cm/sms`. To experiment with that code, run `bin/console` for an interactive prompt.
+Send text messages by means of the HTTP protocol with the service of https://www.cmtelecom.com, from your ruby app.
+​
+Usage
+------------
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
+Create a class that is inherited from `CmSms::Messenger`.
 
 ```ruby
-gem 'cm-sms'
+class TextMessageNotifier < CmSms::Messenger
+end
 ```
 
-And then execute:
+Now you can add your first welcome message.
+This can be as simple as:
 
-    $ bundle
+```ruby
+class TextMessageNotifier < CmSms::Messenger
+  default from: 'some string or mobile number'
 
-Or install it yourself as:
+  def welcome(recipient)
+    @recipient = recipient
+    
+    content(to: recipient.mobile_number, body: 'Some text, reference: recipient.id)
+  end
+end
+```
+### Setting defaults
 
-    $ gem install cm-sms
+It is possible to set default values that will be used in every method in your CmSms Messenger class. To implement this functionality, you just call the public class method default which is inherited from CmSms::Messenger. This method accepts a Hash as the parameter. You can use :from, :to and :body as the key.
 
-## Usage
+Note that every value you set with this method will get overwritten if you use the same key in your mailer method.
 
-TODO: Write usage instructions here
+Example:
 
-## Development
+```ruby
+class TextMessageNotifier < CmSms::Messenger
+  default from: "Quentin", "00491710000000"
+  .....
+end
+```
+### Deliver messages
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+In order to send your sms, you simply call the method and then call `deliver_now` on the return value.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Calling the method returns a CmSms Message object:
+```ruby
+message = TextMessageNotifier.welcome(User.first)   # => Returns a CmSms::Message object
+message.deliver_now
+```
+
+Installation
+------------
+
+If you user bundler, then just add 
+```ruby
+$ gem 'cm-sms'
+```
+to your Gemfile and execute
+```
+$ bundle install
+```
+or without bundler
+```
+$ gem install cms-sms
+```
+
+Upgrade
+-------
+```
+$ bundle update cms-sms
+```
+or without bundler
+
+```
+$ gem update cms-sms
+```
+​
+Changelog
+---------
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/cm-sms. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/HitFox/cm-sms. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
