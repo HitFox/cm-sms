@@ -13,6 +13,7 @@ Description
 -----------
 
 Send text messages by means of the HTTP protocol with the service of https://www.cmtelecom.com, from your ruby app.
+If you want to send sms from your rails app, please have a look at: https://github.com/HitFox/cm-sms-rails.
 ​
 Usage
 ------------
