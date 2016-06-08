@@ -1,4 +1,4 @@
-![alt text](http://www.hitfoxgroup.com/downloads/hitfox_logo_with_tag_two_colors_WEB.png "Logo Hitfox Group")
+![alt text](https://d21buns5ku92am.cloudfront.net/59399/images/195128-FL_Logo.4c_pos-9e9519-medium-1455014952.png "Logo Finleap GmbH")
 
 
 Cm-Sms
