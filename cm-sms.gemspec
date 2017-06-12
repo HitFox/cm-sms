@@ -27,8 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "phonelib", "~> 0.6"
 
   if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-    spec.add_runtime_dependency "builder", "~> 3.2"
+    spec.add_runtime_dependency "builder", "< 4.0.0", ">= 3.0.0"
   else
-    spec.add_dependency "builder", "~> 3.2"
+    spec.add_dependency "builder", "< 4.0.0", ">= 3.0.0"
   end
 end
