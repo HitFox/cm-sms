@@ -10,6 +10,7 @@ SimpleCov.start
 Bundler.setup
 
 require 'phony'
+require 'phonelib'
 require 'builder'
 require 'cm-sms'
 

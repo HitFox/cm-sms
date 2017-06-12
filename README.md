@@ -91,6 +91,14 @@ or without bundler
 $ gem update cms-sms
 ```
 ​
+Optional Number Validation
+--------------------------
+
+Cm-Sms will look for the presence of either [Phony](https://github.com/floere/phony)
+or [Phonelib](https://github.com/daddyz/phonelib) and use one of these libraries
+to perform a basic check of receiver number. This check does not consider whether the
+number is a mobile number.
+
 Changelog
 ---------
 
