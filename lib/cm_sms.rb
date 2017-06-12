@@ -5,7 +5,7 @@ module CmSms
   autoload :Message, 'cm_sms/message'
   autoload :MessageDelivery, 'cm_sms/message_delivery'
   autoload :Webhook, 'cm_sms/webhook'
-  
+
   class << self
     def configure
       yield(configuration)
@@ -14,7 +14,7 @@ module CmSms
     def configuration
       @configuration ||= Configuration.new
     end
-    
-    alias :config :configuration
+
+    alias config configuration
   end
 end

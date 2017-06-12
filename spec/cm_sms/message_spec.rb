@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'cm_sms/message'
 
 RSpec.describe CmSms::Message do
-
   let(:message_body) { 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v' }
 
   let(:message) do
@@ -55,7 +54,10 @@ RSpec.describe CmSms::Message do
     end
 
     context 'neither phony nor phonelib present' do
-      before { hide_const('Phony'); hide_const('Phonelib') }
+      before do
+        hide_const('Phony')
+        hide_const('Phonelib')
+      end
       context 'when a invalid phone number is provided' do
         subject(:resource) do
           message.to = 'Fuubar'
