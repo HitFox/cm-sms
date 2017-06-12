@@ -68,19 +68,19 @@ module CmSms
     end
 
     def deliver
-      raise CmSms::Configuration::ProductTokenMissing.new("Please provide an valid product key.\nAfter signup at https://www.cmtelecom.de/, you will find one in your settings.") unless product_token_present?
+      raise CmSms::Configuration::ProductTokenMissing, "Please provide an valid product key.\nAfter signup at https://www.cmtelecom.de/, you will find one in your settings." unless product_token_present?
 
       request.perform
     end
 
     def deliver!
-      raise FromMissing.new('The value for the from attribute is missing.') unless sender_present?
-      raise FromTooLong.new('The value for the sender attribute must contain 1..11 characters.') unless sender_length?
-      raise ToMissing.new('The value for the to attribute is missing.') unless receiver_present?
-      raise BodyMissing.new('The body of the message is missing.') unless body_present?
-      raise BodyTooLong.new('The body of the message has a length greater than 160.') unless body_correct_length?
-      raise ToUnplausible.new("The given value for the to attribute is not a plausible phone number.\nMaybe the country code is missing.") unless receiver_plausible?
-      raise DCSNotNumeric.new("The given value for the dcs attribute is not a number.") unless dcs_numeric?
+      raise FromMissing, 'The value for the from attribute is missing.' unless sender_present?
+      raise FromTooLong, 'The value for the sender attribute must contain 1..11 characters.' unless sender_length?
+      raise ToMissing, 'The value for the to attribute is missing.' unless receiver_present?
+      raise BodyMissing, 'The body of the message is missing.' unless body_present?
+      raise BodyTooLong, 'The body of the message has a length greater than 160.' unless body_correct_length?
+      raise ToUnplausible, "The given value for the to attribute is not a plausible phone number.\nMaybe the country code is missing." unless receiver_plausible?
+      raise DCSNotNumeric, 'The given value for the dcs attribute is not a number.' unless dcs_numeric?
 
       deliver
     end
@@ -88,8 +88,7 @@ module CmSms
     def to_xml
       builder = Builder::XmlMarkup.new
       builder.instruct! :xml, version: '1.0'
-
-      xml = builder.MESSAGES do |m|
+      builder.MESSAGES do |m|
         m.AUTHENTICATION do |authentication|
           authentication.PRODUCTTOKEN @product_token
         end

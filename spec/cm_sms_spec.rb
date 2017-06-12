@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe CmSms do
-  
   it 'has a version number' do
     expect(CmSms::VERSION).not_to be nil
     expect(CmSms.version).not_to be nil
   end
-  
+
   before do
     CmSms.configure do |config|
       config.from = '+41 44 111 22 33'
@@ -16,7 +15,7 @@ RSpec.describe CmSms do
       config.path = '/example'
     end
   end
-  
+
   describe '.configuration' do
     it 'delegates all defaults to the current configuration' do
       expect(CmSms.config.from).to eq '+41 44 111 22 33'
