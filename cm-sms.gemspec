@@ -23,12 +23,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "webmock", "~> 1.0"
-  
+  spec.add_development_dependency "phony", "~> 2.12"
+  spec.add_development_dependency "phonelib", "~> 0.6"
+
   if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-    spec.add_runtime_dependency "phony", "~> 2.12"
     spec.add_runtime_dependency "builder", "~> 3.2"
   else
-    spec.add_dependency "phony", "~> 2.15"
     spec.add_dependency "builder", "~> 3.2"
   end
 end
