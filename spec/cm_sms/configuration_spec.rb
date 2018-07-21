@@ -3,7 +3,7 @@ require 'cm_sms/configuration'
 
 RSpec.describe CmSms::Configuration do
   it 'has a endpoit set in constant' do
-    expect(CmSms::Configuration::ENDPOINT).to eq 'https://sgw01.cm.nl'
+    expect(CmSms::Configuration::ENDPOINTS).to eq %w[https://sgw01.cm.nl https://sgw02.cm.nl]
   end
 
   it 'has a path default' do
@@ -12,20 +12,30 @@ RSpec.describe CmSms::Configuration do
 
   let(:config) { described_class.new }
 
-  describe '#endpoint' do
+  describe '#endpoints' do
     context 'when endpoint is set through setter' do
       subject(:resource) do
         config.endpoint = 'http://local.host'
         config
       end
       it 'returns the setted endpoint' do
-        expect(resource.endpoint).to eq 'http://local.host'
+        expect(resource.endpoints).to eq ['http://local.host']
       end
     end
 
-    context 'when endpoint is not set' do
-      it 'returns the default enpoint set in constant' do
-        expect(config.endpoint).to eq CmSms::Configuration::ENDPOINT
+    context 'when endpoints is set through setter' do
+      subject(:resource) do
+        config.endpoints = %w[http://local.host http://other.host]
+        config
+      end
+      it 'returns the setted endpoint' do
+        expect(resource.endpoints).to eq %w[http://local.host http://other.host]
+      end
+    end
+
+    context 'when endpoints is not set' do
+      it 'returns the default endpoints set in constant' do
+        expect(config.endpoints).to eq CmSms::Configuration::ENDPOINTS
       end
     end
   end

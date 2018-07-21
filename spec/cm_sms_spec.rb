@@ -21,7 +21,7 @@ RSpec.describe CmSms do
       expect(CmSms.config.from).to eq '+41 44 111 22 33'
       expect(CmSms.config.to).to eq '+41 44 111 22 33'
       expect(CmSms.config.product_token).to eq 'SOMETOKEN'
-      expect(CmSms.config.endpoint).to eq 'http://example.com'
+      expect(CmSms.config.endpoints).to eq ['http://example.com']
       expect(CmSms.config.path).to eq '/example'
     end
   end

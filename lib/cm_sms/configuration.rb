@@ -4,16 +4,19 @@ module CmSms
     class EndpointMissing < ArgumentError; end
     class PathMissing < ArgumentError; end
 
-    ENDPOINT = 'https://sgw01.cm.nl'.freeze
+    ENDPOINTS = %w[https://sgw01.cm.nl https://sgw02.cm.nl].map(&:freeze).freeze
     PATH     = '/gateway.ashx'.freeze
     DCS      = 0
 
-    attr_accessor :from, :to, :product_token, :endpoint, :path, :dcs
+    attr_accessor :from, :to, :product_token
+    attr_writer :endpoints, :path, :dcs
 
     alias api_key= product_token=
+    alias endpoint= endpoints=
 
-    def endpoint
-      @endpoint || ENDPOINT
+    def endpoints
+      endpoints = Array(@endpoints)
+      endpoints.empty? ? ENDPOINTS : endpoints
     end
 
     def path

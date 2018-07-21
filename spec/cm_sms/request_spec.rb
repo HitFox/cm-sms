@@ -14,6 +14,20 @@ RSpec.describe CmSms::Request do
   let(:request_body) { message.to_xml }
   let(:request) { described_class.new(request_body) }
 
+  describe '@endpoint' do
+    before { CmSms.configuration.endpoints = nil }
+
+    context 'endpoint is randomized to sgw01' do
+      before { srand(0) }
+      it { expect(request.instance_variable_get('@endpoint')).to eq 'https://sgw01.cm.nl' }
+    end
+
+    context 'endpoint is randomized to sgw02' do
+      before { srand(1) }
+      it { expect(request.instance_variable_get('@endpoint')).to eq 'https://sgw02.cm.nl' }
+    end
+  end
+
   describe '#perform' do
     context 'when the API endpoint is missing' do
       let(:resource) do

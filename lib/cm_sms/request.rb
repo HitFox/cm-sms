@@ -8,12 +8,12 @@ module CmSms
 
     def initialize(body)
       @body     = body
-      @endpoint = CmSms.config.endpoint
+      @endpoint = CmSms.config.endpoints.sample
       @path     = CmSms.config.path
     end
 
     def perform
-      raise CmSms::Configuration::EndpointMissing, "Please provide an valid api endpoint.\nIf you leave this config blank, the default will be set to https://sgw01.cm.nl." if @endpoint.nil? || @endpoint.empty?
+      raise CmSms::Configuration::EndpointMissing, 'Please provide an valid api endpoint.' if @endpoint.nil? || @endpoint.empty?
       raise CmSms::Configuration::PathMissing, "Please provide an valid api path.\nIf you leave this config blank, the default will be set to /gateway.ashx." if @path.nil? || @path.empty?
 
       uri = URI.parse(@endpoint)
