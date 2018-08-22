@@ -4,8 +4,8 @@ require 'cm_sms/message'
 RSpec.describe CmSms::Message do
   let(:message_body) { 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v' }
 
-  let(:product_token){ nil }
-  let(:endpoints)    { nil }
+  let(:product_token) { nil }
+  let(:endpoints) { nil }
 
   let(:message) do
     message = described_class.new
@@ -265,7 +265,7 @@ RSpec.describe CmSms::Message do
     end
 
     context 'when endpoints set' do
-      let(:endpoints){ 'foobar' }
+      let(:endpoints) { 'foobar' }
       it do
         expect(CmSms::Request).to receive(:new).with(message.to_xml, %w[foobar])
         message.request
