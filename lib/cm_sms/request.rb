@@ -6,9 +6,9 @@ module CmSms
 
     attr_reader :response
 
-    def initialize(body)
+    def initialize(body, endpoints = nil)
       @body     = body
-      @endpoint = CmSms.config.endpoints.sample
+      @endpoint = (endpoints || CmSms.config.endpoints).sample
       @path     = CmSms.config.path
     end
 

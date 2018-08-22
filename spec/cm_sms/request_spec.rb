@@ -12,7 +12,8 @@ RSpec.describe CmSms::Request do
     message
   end
   let(:request_body) { message.to_xml }
-  let(:request) { described_class.new(request_body) }
+  let(:endpoints) { nil }
+  let(:request) { described_class.new(request_body, endpoints) }
 
   describe '@endpoint' do
     before { CmSms.configuration.endpoints = nil }
@@ -25,6 +26,12 @@ RSpec.describe CmSms::Request do
     context 'endpoint is randomized to sgw02' do
       before { srand(1) }
       it { expect(request.instance_variable_get('@endpoint')).to eq 'https://sgw02.cm.nl' }
+    end
+
+    context 'when endpoints arg set' do
+      let(:endpoints) { %w[foobar bazqux] }
+      before { srand(0) }
+      it { expect(request.instance_variable_get('@endpoint')).to eq 'foobar' }
     end
   end
 
