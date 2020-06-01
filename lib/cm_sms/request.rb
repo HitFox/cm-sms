@@ -17,7 +17,8 @@ module CmSms
       raise CmSms::Configuration::PathMissing, "Please provide an valid api path.\nIf you leave this config blank, the default will be set to /gateway.ashx." if @path.nil? || @path.empty?
 
       uri = URI.parse(@endpoint)
-      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      timeout = CmSms.config.timeout
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https', open_timeout: timeout, read_timeout: timeout) do |http|
         @response = Response.new(http.post(@path, body, 'Content-Type' => 'application/xml'))
       end
       response
