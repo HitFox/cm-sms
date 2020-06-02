@@ -4,12 +4,17 @@ require 'cm_sms/message'
 RSpec.describe CmSms::Message do
   let(:message_body) { 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirood tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At v' }
 
+  let(:product_token) { nil }
+  let(:endpoints) { nil }
+
   let(:message) do
     message = described_class.new
     message.from = 'ACME'
     message.to = '+41 44 111 22 33'
     message.body = message_body
     message.reference = 'Ref:123'
+    message.product_token = product_token
+    message.endpoints = endpoints
     message
   end
 
@@ -110,15 +115,57 @@ RSpec.describe CmSms::Message do
     end
   end
 
-  describe '#product_token_present?' do
-    context 'when a valid product_token is provided' do
+  describe '#endpoints' do
+    context 'when a endpoints configured at config level' do
+      before { CmSms.configure { |config| config.endpoints = %w[bazqux bingbaz] } }
+      it { expect(message.endpoints).to eq %w[bazqux bingbaz] }
+
+      context 'when a endpoints set on message' do
+        let(:endpoints) { 'foobar' }
+        it { expect(message.endpoints).to eq ['foobar'] }
+      end
+    end
+
+    context 'when no endpoints is provided' do
+      before { CmSms.configure { |config| config.endpoints = nil } }
+      it { expect(message.endpoints).to eq %w[https://gw.cmtelecom.com] }
+
+      context 'when a endpoints set on message' do
+        let(:endpoints) { 'foobar' }
+        it { expect(message.endpoints).to eq ['foobar'] }
+      end
+    end
+  end
+
+  describe '#product_token and #product_token_present?' do
+    context 'when a product_token configured at config level' do
       before { CmSms.configure { |config| config.product_token = 'SOMETOKEN' } }
-      it { expect(message.product_token_present?).to be true }
+      it { expect(message.product_token).to eq 'SOMETOKEN' }
+      it { expect(message.product_token_present?).to eq true }
+
+      context 'when a product_token set on message' do
+        let(:product_token) { 'MSGTOKEN' }
+        it { expect(message.product_token).to eq 'MSGTOKEN' }
+        it { expect(message.product_token_present?).to eq true }
+      end
     end
 
     context 'when no product_token is provided' do
       before { CmSms.configure { |config| config.product_token = nil } }
-      it { expect(message.product_token_present?).to be false }
+      it { expect(message.product_token).to eq nil }
+      it { expect(message.product_token_present?).to eq false }
+
+      context 'when a product_token set on message' do
+        let(:product_token) { 'MSGTOKEN' }
+        it { expect(message.product_token).to eq 'MSGTOKEN' }
+        it { expect(message.product_token_present?).to eq true }
+      end
+    end
+
+    context 'when no product_token is blank' do
+      before { CmSms.configure { |config| config.product_token = '' } }
+      it { expect(message.product_token).to eq '' }
+      it { expect(message.product_token_present?).to eq false }
     end
   end
 
@@ -208,7 +255,22 @@ RSpec.describe CmSms::Message do
   end
 
   describe '#request' do
+    before { CmSms.configure { |config| config.endpoints = nil } }
+
     it { expect(message.request).to be_kind_of(CmSms::Request) }
+
+    it do
+      expect(CmSms::Request).to receive(:new).with(message.to_xml, %w[https://gw.cmtelecom.com])
+      message.request
+    end
+
+    context 'when endpoints set' do
+      let(:endpoints) { 'foobar' }
+      it do
+        expect(CmSms::Request).to receive(:new).with(message.to_xml, %w[foobar])
+        message.request
+      end
+    end
   end
 
   describe '#to_xml' do

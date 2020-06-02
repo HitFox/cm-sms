@@ -3,7 +3,7 @@ require 'cm_sms/configuration'
 
 RSpec.describe CmSms::Configuration do
   it 'has a endpoit set in constant' do
-    expect(CmSms::Configuration::ENDPOINT).to eq 'https://sgw01.cm.nl'
+    expect(CmSms::Configuration::ENDPOINTS).to eq %w[https://gw.cmtelecom.com]
   end
 
   it 'has a path default' do
@@ -12,20 +12,30 @@ RSpec.describe CmSms::Configuration do
 
   let(:config) { described_class.new }
 
-  describe '#endpoint' do
+  describe '#endpoints' do
     context 'when endpoint is set through setter' do
       subject(:resource) do
         config.endpoint = 'http://local.host'
         config
       end
-      it 'returns the setted endpoint' do
-        expect(resource.endpoint).to eq 'http://local.host'
+      it 'returns the set endpoint' do
+        expect(resource.endpoints).to eq ['http://local.host']
       end
     end
 
-    context 'when endpoint is not set' do
-      it 'returns the default enpoint set in constant' do
-        expect(config.endpoint).to eq CmSms::Configuration::ENDPOINT
+    context 'when endpoints is set through setter' do
+      subject(:resource) do
+        config.endpoints = %w[http://local.host http://other.host]
+        config
+      end
+      it 'returns the set endpoint' do
+        expect(resource.endpoints).to eq %w[http://local.host http://other.host]
+      end
+    end
+
+    context 'when endpoints is not set' do
+      it 'returns the default endpoints set in constant' do
+        expect(config.endpoints).to eq CmSms::Configuration::ENDPOINTS
       end
     end
   end
@@ -36,13 +46,13 @@ RSpec.describe CmSms::Configuration do
         config.path = '/example'
         config
       end
-      it 'returns the setted path' do
+      it 'returns the set path' do
         expect(resource.path).to eq '/example'
       end
     end
 
     context 'when path is not set' do
-      it 'returns the default enpoint set in constant' do
+      it 'returns the default path set in constant' do
         expect(config.path).to eq CmSms::Configuration::PATH
       end
     end
@@ -54,14 +64,32 @@ RSpec.describe CmSms::Configuration do
         config.dcs = 8
         config
       end
-      it 'returns the setted dcs' do
+      it 'returns the set dcs' do
         expect(resource.dcs).to eq 8
       end
     end
 
     context 'when dcs is not set' do
-      it 'returns the default enpoint set in constant' do
+      it 'returns the default dcs set in constant' do
         expect(config.dcs).to eq CmSms::Configuration::DCS
+      end
+    end
+  end
+
+  describe '#timeout' do
+    context 'when timeout is set through setter' do
+      subject(:resource) do
+        config.timeout = 20
+        config
+      end
+      it 'returns the set timeout' do
+        expect(resource.timeout).to eq 20
+      end
+    end
+
+    context 'when timeout is not set' do
+      it 'returns the default timeout set in constant' do
+        expect(config.timeout).to eq CmSms::Configuration::TIMEOUT
       end
     end
   end
@@ -72,7 +100,7 @@ RSpec.describe CmSms::Configuration do
         config.product_token = 'SOMETOKEN'
         config
       end
-      it 'returns the setted product_token' do
+      it 'returns the set product_token' do
         expect(resource.product_token).to eq 'SOMETOKEN'
       end
     end
@@ -82,7 +110,7 @@ RSpec.describe CmSms::Configuration do
         config.api_key = 'SOMEKEY'
         config
       end
-      it 'returns the setted product_token' do
+      it 'returns the set product_token' do
         expect(resource.product_token).to eq 'SOMEKEY'
       end
     end
@@ -94,7 +122,7 @@ RSpec.describe CmSms::Configuration do
         config.from = 'me'
         config
       end
-      it 'returns the setted from' do
+      it 'returns the set from' do
         expect(resource.from).to eq 'me'
       end
     end
@@ -106,7 +134,7 @@ RSpec.describe CmSms::Configuration do
         config.to = 'you'
         config
       end
-      it 'returns the setted to' do
+      it 'returns the set to' do
         expect(resource.to).to eq 'you'
       end
     end

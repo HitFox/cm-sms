@@ -12,6 +12,7 @@ module CmSms
     class DCSNotNumeric < ArgumentError; end
 
     attr_accessor :from, :to, :body, :dcs, :reference
+    attr_reader :product_token, :endpoints
 
     def initialize(attributes = {})
       @from          = attributes[:from]
@@ -20,7 +21,16 @@ module CmSms
       @body          = attributes[:body]
       @reference     = attributes[:reference]
 
-      @product_token = CmSms.config.product_token
+      self.product_token = attributes[:product_token]
+      self.endpoints     = attributes[:endpoints]
+    end
+
+    def product_token=(value)
+      @product_token = value || CmSms.config.product_token
+    end
+
+    def endpoints=(value)
+      @endpoints = value ? Array(value) : CmSms.config.endpoints
     end
 
     def dcs_numeric?
@@ -64,7 +74,7 @@ module CmSms
     end
 
     def request
-      Request.new(to_xml)
+      Request.new(to_xml, @endpoints)
     end
 
     def deliver

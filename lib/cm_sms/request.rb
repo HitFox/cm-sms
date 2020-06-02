@@ -6,18 +6,19 @@ module CmSms
 
     attr_reader :response
 
-    def initialize(body)
+    def initialize(body, endpoints = nil)
       @body     = body
-      @endpoint = CmSms.config.endpoint
+      @endpoint = (endpoints || CmSms.config.endpoints).sample
       @path     = CmSms.config.path
     end
 
     def perform
-      raise CmSms::Configuration::EndpointMissing, "Please provide an valid api endpoint.\nIf you leave this config blank, the default will be set to https://sgw01.cm.nl." if @endpoint.nil? || @endpoint.empty?
+      raise CmSms::Configuration::EndpointMissing, 'Please provide an valid api endpoint.' if @endpoint.nil? || @endpoint.empty?
       raise CmSms::Configuration::PathMissing, "Please provide an valid api path.\nIf you leave this config blank, the default will be set to /gateway.ashx." if @path.nil? || @path.empty?
 
       uri = URI.parse(@endpoint)
-      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      timeout = CmSms.config.timeout
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https', open_timeout: timeout, read_timeout: timeout) do |http|
         @response = Response.new(http.post(@path, body, 'Content-Type' => 'application/xml'))
       end
       response
