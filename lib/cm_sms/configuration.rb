@@ -4,7 +4,7 @@ module CmSms
     class EndpointMissing < ArgumentError; end
     class PathMissing < ArgumentError; end
 
-    ENDPOINTS = %w[https://sgw01.cm.nl https://sgw02.cm.nl].map(&:freeze).freeze
+    ENDPOINTS = %w[https://gw.cmtelecom.com].map(&:freeze).freeze
     PATH = '/gateway.ashx'.freeze
     DCS = 0
     TIMEOUT = 10

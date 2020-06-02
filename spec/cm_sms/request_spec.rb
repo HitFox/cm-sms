@@ -18,14 +18,14 @@ RSpec.describe CmSms::Request do
   describe '@endpoint' do
     before { CmSms.configuration.endpoints = nil }
 
-    context 'endpoint is randomized to sgw01' do
+    context 'endpoint is randomized to first' do
       before { srand(0) }
-      it { expect(request.instance_variable_get('@endpoint')).to eq 'https://sgw01.cm.nl' }
+      it { expect(request.instance_variable_get('@endpoint')).to eq 'https://gw.cmtelecom.com' }
     end
 
-    context 'endpoint is randomized to sgw02' do
+    context 'endpoint is randomized to second' do
       before { srand(1) }
-      it { expect(request.instance_variable_get('@endpoint')).to eq 'https://sgw02.cm.nl' }
+      it { expect(request.instance_variable_get('@endpoint')).to eq 'https://gw.cmtelecom.com' }
     end
 
     context 'when endpoints arg set' do

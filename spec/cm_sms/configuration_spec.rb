@@ -3,7 +3,7 @@ require 'cm_sms/configuration'
 
 RSpec.describe CmSms::Configuration do
   it 'has a endpoit set in constant' do
-    expect(CmSms::Configuration::ENDPOINTS).to eq %w[https://sgw01.cm.nl https://sgw02.cm.nl]
+    expect(CmSms::Configuration::ENDPOINTS).to eq %w[https://gw.cmtelecom.com]
   end
 
   it 'has a path default' do

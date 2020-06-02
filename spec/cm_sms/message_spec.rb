@@ -128,7 +128,7 @@ RSpec.describe CmSms::Message do
 
     context 'when no endpoints is provided' do
       before { CmSms.configure { |config| config.endpoints = nil } }
-      it { expect(message.endpoints).to eq %w[https://sgw01.cm.nl https://sgw02.cm.nl] }
+      it { expect(message.endpoints).to eq %w[https://gw.cmtelecom.com] }
 
       context 'when a endpoints set on message' do
         let(:endpoints) { 'foobar' }
@@ -260,7 +260,7 @@ RSpec.describe CmSms::Message do
     it { expect(message.request).to be_kind_of(CmSms::Request) }
 
     it do
-      expect(CmSms::Request).to receive(:new).with(message.to_xml, %w[https://sgw01.cm.nl https://sgw02.cm.nl])
+      expect(CmSms::Request).to receive(:new).with(message.to_xml, %w[https://gw.cmtelecom.com])
       message.request
     end
 
